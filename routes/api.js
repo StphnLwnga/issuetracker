@@ -69,18 +69,15 @@ module.exports = function (app) {
         let issueData = Object.keys(req.body).length === 0 ? req.query : req.body;
         let _id = issueData._id;
 
+        // Throw error if missing id
         if (!_id) throw { error: 'missing _id', }
 
-        // Filter by g
-        const filteredData = await Object.fromEntries(
-          Object
-            .entries(issueData)
-            .filter(entry => (entry[1] === '' || entry[0] === '_id') ? true : false)
-        );
-        
-        // throw error 
-        if (Object.keys(filteredData).length === 0) throw { error: 'no update field(s) sent', '_id': _id }
+        // Check for & throw error if empty fields apart from id are being passed
+        const filteredData = { ...issueData }
+        delete filteredData._id;
+        if (Object.values(filteredData).every(field => field === '')) throw { error: 'no update field(s) sent', '_id': _id }
 
+        // Update entry in database
         await Issue.findByIdAndUpdate(
           new ObjectID(_id),
           { ...issueData, updated_on: new Date().toISOString(), }
