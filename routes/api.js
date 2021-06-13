@@ -13,7 +13,7 @@ module.exports = function (app) {
         let project = req.params.project;
         let issueData = req.query;
         // console.log(issueData)
-        let data = issueData ? await Issue.find({ project }) : await Issue.find({ ...issueData, project });
+        let data = Object.keys(issueData).length === 0 ? await Issue.find({ project }) : await Issue.find({ ...issueData, project });
         // console.log(data)
         res.json(data);
       } catch (error) {
