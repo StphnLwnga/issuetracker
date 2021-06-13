@@ -4,8 +4,8 @@
 	"description": "Issue Tracker Boilerplate",
 	"main": "server.js",
 	"scripts": {
-		"start": "nodemon server.js",
-		"test": "mocha --timeout 5000 --recursive --exit --ui tdd tests/"
+		"start": "node server.js",
+		"test": "mocha --timeout 60000 --recursive --exit --ui tdd tests/"
 	},
 	"dependencies": {
 		"body-parser": "^1.19.0",
@@ -29,6 +29,7 @@
 	],
 	"license": "MIT",
 	"devDependencies": {
+		"mongodb-memory-server-global": "^6.9.6",
 		"nodemon": "^2.0.7"
 	}
 }

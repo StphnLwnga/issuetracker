@@ -76,11 +76,11 @@ module.exports = function (app) {
         // Check for & throw error if empty fields apart from id are being passed
         const filteredData = { ...issueData }
         delete filteredData._id;
-        if (Object.values(filteredData).every(field => field === '')) throw { error: 'no update field(s) sent', '_id': _id }
+        if (Object.values(filteredData).every(field => field === '') || Object.values(filteredData).length === 0) throw { error: 'no update field(s) sent', '_id': _id }
 
         // Update entry in database
         await Issue.findByIdAndUpdate(
-          new ObjectID(_id),
+          _id,
           { ...issueData, updated_on: new Date().toISOString(), }
         ).orFail({ error: 'could not update', _id: _id });
 
