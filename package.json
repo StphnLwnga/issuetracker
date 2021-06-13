@@ -29,7 +29,6 @@
 	],
 	"license": "MIT",
 	"devDependencies": {
-		"mongodb-memory-server-global": "^6.9.6",
 		"nodemon": "^2.0.7"
 	}
 }
