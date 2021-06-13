@@ -1,9 +1,10 @@
 'use strict';
 
 const express     = require('express');
-const bodyParser  = require('body-parser');
 const expect      = require('chai').expect;
 const cors        = require('cors');
+const mongoose = require('mongoose');
+
 require('dotenv').config();
 
 const apiRoutes         = require('./routes/api.js');
@@ -16,10 +17,12 @@ app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
 
+//Set up default mongoose connection
+const mongoDB = process.env.MONGO_URI;
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, });
 
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Sample front-end
 app.route('/:project/')
