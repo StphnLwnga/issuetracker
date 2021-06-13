@@ -21,11 +21,11 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 const mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, });
 
-// //Get the default connection
-// const db = mongoose.connection;
+//Get the default connection
+const db = mongoose.connection;
 
-// //Bind connection to error event (to get notification of connection errors)
-// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -68,7 +68,7 @@ app.listen(process.env.PORT || 3000, function () {
           console.log('Tests are not valid:');
           console.log(error);
       }
-    }, 6500);
+    }, 10000);
   }
 });
 
