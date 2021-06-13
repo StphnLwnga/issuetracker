@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const ObjectID = require('mongodb').ObjectID;
 
 const Issue = require('../models/issue.js');
 
@@ -81,11 +82,11 @@ module.exports = function (app) {
         if (Object.keys(filteredData).length === 0) throw { error: 'no update field(s) sent', '_id': _id }
 
         await Issue.findByIdAndUpdate(
-          _id,
+          new ObjectID(_id),
           { ...issueData, updated_on: new Date().toISOString(), }
         ).orFail({ error: 'could not update', _id: _id });
 
-        res.json({ result: 'successfully updated', '_id': _id })
+        res.json({ result: 'successfully updated', '_id': _id });
       } catch (error) {
         console.log(error);
         error.name === 'CastError' ? res.json({ error: 'could not update', _id: req.body._id }) : res.json(error)
