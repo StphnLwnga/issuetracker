@@ -27,6 +27,7 @@ module.exports = function (app) {
       try {
         let project = req.params.project;
 
+        // Parse body & query string parameters for data
         let issueData = Object.keys(req.body).length === 0 ? req.query : req.body;
 
         const { issue_title, issue_text, created_by, assigned_to, status_text } = issueData;
@@ -67,7 +68,7 @@ module.exports = function (app) {
       try {
         let project = req.params.project;
         let issueData = Object.keys(req.body).length === 0 ? req.query : req.body;
-        let _id = issueData._id;
+        var _id = issueData._id;
 
         // Throw error if missing id
         if (!_id) throw { error: 'missing _id', }
@@ -86,15 +87,24 @@ module.exports = function (app) {
         res.json({ result: 'successfully updated', '_id': _id });
       } catch (error) {
         console.log(error);
-        error.name === 'CastError' ? res.json({ error: 'could not update', _id: req.body._id }) : res.json(error)
+        error.name === 'CastError' ? res.json({ error: 'could not update', _id: _id }) : res.json(error)
       }
     })
 
     .delete(async function (req, res) {
       try {
         let project = req.params.project;
-      } catch (error) {
+        let issueData = Object.keys(req.body).length === 0 ? req.query : req.body;
+        var _id = issueData._id;
 
+        if (!_id) throw { error: 'missing _id' }
+
+        await Issue.deleteOne({_id}).orFail({ error: 'could not delete', '_id': _id });
+
+        res.json({ result: 'successfully deleted', '_id': _id })
+      } catch (error) {
+        console.log(error)
+        error.name === 'CastError' ? res.json({ error: 'could not delete', '_id': _id }) : res.json(error)
       }
     });
 
